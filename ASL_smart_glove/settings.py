@@ -32,8 +32,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 if PRODUCTION:
-    ALLOWED_HOSTS = [env("WEBSITE_HOSTNAME")]
-    CSRF_TRUSTED_ORIGINS = ['https://' + env('WEBSITE_HOSTNAME')]
+    ALLOWED_HOSTS = [env("WEBSITE_URL")]
+    CSRF_TRUSTED_ORIGINS = ['https://' + env('WEBSITE_URL')]
     DEBUG = False
 
 # Application definition
