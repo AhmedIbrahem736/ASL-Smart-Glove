@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'apps.ML_models',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,8 @@ if PRODUCTION:
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Firebase
+FIREBASE_DATABASE_URL = env('FIREBASE_DATABASE_URL')
+FIREBASE_API_KEY = env('FIREBASE_API_KEY')
+FIREBASE_PATH_TO_DATA = env('FIREBASE_PATH_TO_DATA')
