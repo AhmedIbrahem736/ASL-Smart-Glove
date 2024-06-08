@@ -7,12 +7,20 @@ import pickle
 import numpy as np
 import pandas as pd
 import time
+import google.generativeai as genai
 
 with open('apps/ML_models/saved_models/scaler.pkl', 'rb') as scaler_file:
     scaler = pickle.load(scaler_file)
 
 with open('apps/ML_models/saved_models/model.pkl', 'rb') as file:
     model = pickle.load(file)
+
+genai.configure(api_key=settings.GOOGLE_GENAI_API_KEY)
+genai_model = genai.GenerativeModel(
+    model_name=settings.GOOGLE_GENAI_MODEL_NAME,
+    system_instruction=settings.GOOGLE_GENAI_SYSTEM_INSTRUCTION
+)
+genai_chat = genai_model.start_chat(history=[])
 
 
 class RealTimeModelAPIView(views.APIView):
@@ -54,8 +62,10 @@ class RealTimeModelAPIView(views.APIView):
             request_time_in_seconds += delta
 
         predictions = [int_to_char[p] for p in predictions]
+        word = ''.join(predictions)
+        response = genai_chat.send_message(word)
 
-        return Response(''.join(predictions))
+        return Response(response.text[0:-2])
 
 
 class ModelAPIView(views.APIView):
