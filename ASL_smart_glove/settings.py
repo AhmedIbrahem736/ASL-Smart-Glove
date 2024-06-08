@@ -23,17 +23,17 @@ env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY", default="Pretty much secret key")
-PRODUCTION = env.bool("PRODUCTION", default=False)
+SECRET_KEY = os.getenv("SECRET_KEY", default="Pretty much secret key")
+PRODUCTION = os.getenv("PRODUCTION", default=False) == 'True'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 if PRODUCTION:
-    ALLOWED_HOSTS = [env("WEBSITE_URL")]
-    CSRF_TRUSTED_ORIGINS = ['https://' + env('WEBSITE_URL')]
+    ALLOWED_HOSTS = [os.getenv("WEBSITE_URL")]
+    CSRF_TRUSTED_ORIGINS = ['https://' + os.getenv('WEBSITE_URL')]
     DEBUG = False
 
 # Application definition
@@ -104,11 +104,11 @@ if PRODUCTION:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('DBNAME'),
-            'USER': env('DBUSER'),
-            'PASSWORD': env('DBPASS'),
-            'HOST': env('DBHOST'),
-            'PORT': env('DBPORT'),
+            'NAME': os.getenv('DBNAME'),
+            'USER': os.getenv('DBUSER'),
+            'PASSWORD': os.getenv('DBPASS'),
+            'HOST': os.getenv('DBHOST'),
+            'PORT': os.getenv('DBPORT'),
         }
     }
 
@@ -158,6 +158,10 @@ if PRODUCTION:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Firebase
-FIREBASE_DATABASE_URL = os.environ.get('FIREBASE_DATABASE_URL')
-FIREBASE_API_KEY = os.environ.get('FIREBASE_API_KEY')
-FIREBASE_PATH_TO_DATA = os.environ.get('FIREBASE_PATH_TO_DATA')
+FIREBASE_DATABASE_URL = os.getenv('FIREBASE_DATABASE_URL')
+FIREBASE_API_KEY = os.getenv('FIREBASE_API_KEY')
+FIREBASE_PATH_TO_DATA = os.getenv('FIREBASE_PATH_TO_DATA')
+
+# Realtime
+TIME_IN_SECONDS_BETWEEN_SIGNS = int(os.getenv('TIME_IN_SECONDS_BETWEEN_SIGNS'))
+TIME_TO_SLEEP_IN_SECONDS = int(os.getenv('TIME_TO_SLEEP_IN_SECONDS'))
