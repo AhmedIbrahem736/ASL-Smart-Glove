@@ -17,7 +17,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
-env.read_env(os.path.join(BASE_DIR, '.env'))
+env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'apps.ML_models',
 ]
 
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 if PRODUCTION:
     MIDDLEWARE = [
@@ -68,6 +70,7 @@ if PRODUCTION:
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'corsheaders.middleware.CorsMiddleware',
     ]
 
 ROOT_URLCONF = 'ASL_smart_glove.urls'
@@ -148,7 +151,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 if PRODUCTION:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -170,3 +173,5 @@ TIME_TO_SLEEP_IN_SECONDS = env.int('TIME_TO_SLEEP_IN_SECONDS', default=3)
 GOOGLE_GENAI_API_KEY = os.getenv('GOOGLE_GENAI_API_KEY')
 GOOGLE_GENAI_MODEL_NAME = os.getenv('GOOGLE_GENAI_MODEL_NAME')
 GOOGLE_GENAI_SYSTEM_INSTRUCTION = os.getenv('GOOGLE_GENAI_SYSTEM_INSTRUCTION')
+
+CORS_ALLOW_ALL_ORIGINS = True

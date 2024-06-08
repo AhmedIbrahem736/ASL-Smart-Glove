@@ -70,7 +70,7 @@ class RealTimeModelAPIView(views.APIView):
         except Exception as e:
             pass
 
-        return Response(word)
+        return Response(data={'word': word})
 
 
 class ModelAPIView(views.APIView):
@@ -92,7 +92,7 @@ class ModelAPIView(views.APIView):
 
         prediction = model.predict(input_df)
 
-        return Response(int_to_char[prediction[0]])
+        return Response(data={'word': int_to_char[prediction[0]]})
 
     def post(self, request):
         data_serializer = ModelDataSerializer(data=request.data)
