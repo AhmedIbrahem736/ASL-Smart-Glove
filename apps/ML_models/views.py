@@ -63,9 +63,14 @@ class RealTimeModelAPIView(views.APIView):
 
         predictions = [int_to_char[p] for p in predictions]
         word = ''.join(predictions)
-        response = genai_chat.send_message(word)
 
-        return Response(response.text[0:-2])
+        try:
+            response = genai_chat.send_message(word)
+            word = response.text[0:-2]
+        except Exception as e:
+            pass
+
+        return Response(word)
 
 
 class ModelAPIView(views.APIView):
